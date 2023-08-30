@@ -1,0 +1,5 @@
+# Snapbin
+
+```
+make run
+```
