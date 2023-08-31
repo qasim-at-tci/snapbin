@@ -3,20 +3,19 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
 )
 
-func uptimeHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) uptimeHandler(w http.ResponseWriter, r *http.Request) {
 	howOld := time.Now().UTC()
-	fmt.Fprintf(w, "Snapbin lives (since %s)", howOld.Local().Format("2006-01-02 15:04:05"))
+	fmt.Fprintf(w, "Snapbin lives - %s", howOld.Local().Format("2006-01-02 15:04:05"))
 }
 
-func homeHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		app.notFound(w)
 		return
 	}
 
@@ -28,32 +27,31 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Print(err.Error())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, err)
+		return
 	}
 
 	err = ts.ExecuteTemplate(w, "base", nil)
 	if err != nil {
-		log.Print(err.Error())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, err)
 	}
 }
 
-func snippetViewHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetViewHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 1 {
-		http.NotFound(w, r)
+		app.notFound(w)
 		return
 	}
 
 	fmt.Fprintf(w, "Snippet number %d..", id)
 }
 
-func snippetCreateHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetCreateHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		w.Header().Set("Allow", http.MethodPost)
 
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
 	w.Write([]byte("Snippet Create"))

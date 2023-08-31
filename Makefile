@@ -3,4 +3,6 @@ build:
 	@go build -o bin/snapbin ./...
 	@echo "Application build successful!\n"
 run: build
-	@./bin/snapbin
+	@./bin/snapbin -addr=$(addr)
+help:
+	@go run ./... -help
