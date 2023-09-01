@@ -8,11 +8,13 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/qasim-at-tci/snapbin/internal/models"
 )
 
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
+	snaps    *models.SnapModel
 }
 
 func main() {
@@ -32,6 +34,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		snaps:    &models.SnapModel{DB: db},
 	}
 
 	srv := &http.Server{
