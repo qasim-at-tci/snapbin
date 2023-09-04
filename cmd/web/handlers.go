@@ -27,26 +27,10 @@ func (app *application) homeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, snap := range snaps {
-		fmt.Fprintf(w, "%+v\n", snap)
-	}
+	data := app.newTemplateData(r)
+	data.Snaps = snaps
 
-	/* files := []string{
-		"./ui/html/base.tmpl",
-		"./ui/html/partials/nav.tmpl",
-		"./ui/html/pages/home.tmpl",
-	}
-
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
-
-	err = ts.ExecuteTemplate(w, "base", nil)
-	if err != nil {
-		app.serverError(w, err)
-	} */
+	app.render(w, http.StatusOK, "home.tmpl", data)
 }
 
 func (app *application) snippetViewHandler(w http.ResponseWriter, r *http.Request) {
@@ -66,7 +50,10 @@ func (app *application) snippetViewHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	fmt.Fprintf(w, "%+v", snap)
+	data := app.newTemplateData(r)
+	data.Snap = snap
+
+	app.render(w, http.StatusOK, "view.tmpl", data)
 }
 
 func (app *application) snippetCreateHandler(w http.ResponseWriter, r *http.Request) {
