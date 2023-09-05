@@ -100,6 +100,7 @@ func (app *application) snippetCreatePostHandler(w http.ResponseWriter, r *http.
 		data.Form = form
 
 		app.render(w, http.StatusUnprocessableEntity, "create.tmpl", data)
+		return
 	}
 
 	id, err := app.snaps.Insert(form.Title, form.Content, form.Expires)
