@@ -18,9 +18,9 @@ func (app *application) routes() http.Handler {
 	router.Handler(http.MethodGet, "/static/*filepath", http.StripPrefix("/static", fileserver))
 
 	router.HandlerFunc(http.MethodGet, "/", app.homeHandler)
-	router.HandlerFunc(http.MethodGet, "/snippet/view/:id", app.snippetViewHandler)
-	router.HandlerFunc(http.MethodGet, "/snippet/create", app.snippetCreateHandler)
-	router.HandlerFunc(http.MethodPost, "/snippet/create", app.snippetCreatePostHandler)
+	router.HandlerFunc(http.MethodGet, "/snap/view/:id", app.snippetViewHandler)
+	router.HandlerFunc(http.MethodGet, "/snap/create", app.snippetCreateHandler)
+	router.HandlerFunc(http.MethodPost, "/snap/create", app.snippetCreatePostHandler)
 
 	router.HandlerFunc(http.MethodGet, "/uptime", app.uptimeHandler)
 

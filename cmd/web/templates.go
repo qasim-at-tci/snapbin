@@ -12,6 +12,7 @@ type templateData struct {
 	CurrentYear int
 	Snap        *models.Snap
 	Snaps       []*models.Snap
+	Form        any
 }
 
 func humanDate(t time.Time) string {
