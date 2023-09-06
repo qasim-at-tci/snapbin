@@ -13,6 +13,7 @@ type templateData struct {
 	Snap        *models.Snap
 	Snaps       []*models.Snap
 	Form        any
+	Flash       string
 }
 
 func humanDate(t time.Time) string {

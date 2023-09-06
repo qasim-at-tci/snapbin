@@ -99,5 +99,7 @@ func (app *application) snippetCreatePostHandler(w http.ResponseWriter, r *http.
 		return
 	}
 
+	app.sessionManager.Put(r.Context(), "flash", "Snap successfully added!")
+
 	http.Redirect(w, r, fmt.Sprintf("/snap/view/%d", id), http.StatusSeeOther)
 }
